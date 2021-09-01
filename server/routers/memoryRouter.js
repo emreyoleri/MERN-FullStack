@@ -16,10 +16,9 @@ router.get("/", async (req, res) => {
     });
     console.log(error);
   }
-  // res.json({ message: "get all memories from database" });
 });
 
-// get single memories from  db
+// get single memory from  db
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -36,7 +35,6 @@ router.get("/:id", async (req, res) => {
     });
   }
 
-  //res.json({ message: "get single memories from database" });
 });
 
 // create a memory
@@ -50,7 +48,6 @@ router.post("/", async (req, res) => {
       message: "Create memory failed.",
     });
   }
-  // res.json({ message: "create a memory" });
 });
 
 // update a memory
@@ -83,7 +80,6 @@ router.put("/:id", async (req, res) => {
     });
   }
 
-  //res.json({ message: "update a memory" });
 });
 
 // delete a memory
@@ -103,7 +99,6 @@ router.delete("/:id", async (req, res) => {
       message: "delete memory failed.",
     });
   }
-  // res.json({ message: "delete a memory" });
 });
 
 export default router;

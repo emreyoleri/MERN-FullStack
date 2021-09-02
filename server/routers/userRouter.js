@@ -49,7 +49,7 @@ router.post("/signup", async (req, res) => {
       refreshToken: refreshToken,
     });
 
-    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "strict" , secure : true });
+    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "none" , secure : true });
 
 
     res.status(200).json({ user, accessToken });
@@ -79,7 +79,7 @@ router.post("/signin", async (req, res) => {
     const accessToken = jwt.sign(
       { email: user.email, id: user._id },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15s" }
+      { expiresIn: "3m" }
     );
 
     const refreshToken = jwt.sign(
@@ -92,7 +92,7 @@ router.post("/signin", async (req, res) => {
       { refreshToken: refreshToken },
       { new: true }
     );
-    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "strict", secure : true });
+    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "none", secure : true });
     res.status(200).json({ user, accessToken });
   } catch (error) {
     res.status(500).json({
@@ -145,7 +145,7 @@ router.get("/refresh/:id", async (req, res) => {
         const accessToken = jwt.sign(
           { email: decodedRefreshToken.email, id: decodedRefreshToken.id },
           process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "15s" }
+          { expiresIn: "3m" }
         );
         res.status(200).json(accessToken);
       }

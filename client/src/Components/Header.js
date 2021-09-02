@@ -5,7 +5,7 @@ import { TiEdit } from "react-icons/ti";
 import { AiOutlineLogin } from "react-icons/ai";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { useLocation, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userActions } from "../redux/actions/index";
 import decode from "jwt-decode";
@@ -20,6 +20,7 @@ const Header = () => {
     dispatch
   );
   const [user, setUser] = useState(null);
+  const userState = useSelector((state) => state.user);
 
   const exit = async (id) => {
     await logOut(id);
@@ -28,14 +29,20 @@ const Header = () => {
   };
 
   const renewAccessToken = async (id) => {
-    await getAccessToken(id);
-    setUser(JSON.parse(localStorage.getItem("user")));
+    if (!userState.googleLogin) {
+      await getAccessToken(id);
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }
   };
 
   useEffect(() => {
     if (localStorage.getItem("user") && !user) {
-      setUser(JSON.parse(localStorage.getItem("user")));
-      autoSignIn(JSON.parse(localStorage.getItem("user")));
+      if (localStorage.getItem("user") !== "undefined") {
+        setUser(JSON.parse(localStorage.getItem("user")));
+        autoSignIn(JSON.parse(localStorage.getItem("user")));
+      } else {
+        localStorage.removeItem("user");
+      }
     }
 
     const interval = setInterval(() => {
@@ -45,7 +52,6 @@ const Header = () => {
         const decodedAccessToken = decode(accessToken);
 
         if (decodedAccessToken.exp * 1000 < new Date().getTime()) {
-          console.log(decodedAccessToken.exp);
           renewAccessToken(user.user._id);
         }
       }

@@ -142,7 +142,6 @@ router.get("/refresh/:id", async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       (err, decodedRefreshToken) => {
         if (err) return res.status(403).json(err);
-        console.log(decodedRefreshToken);
         const accessToken = jwt.sign(
           { email: decodedRefreshToken.email, id: decodedRefreshToken.id },
           process.env.ACCESS_TOKEN_SECRET,

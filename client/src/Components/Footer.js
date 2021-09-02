@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer>
       <Row className="fixed-bottom bg-dark">
-        <Col className="text-center py-2 text-white">
+        <Col className="text-center py-3 text-white">
           Copyright &copy; Memory Box
         </Col>
       </Row>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
+import { GoogleLogin } from "react-google-login";
+import { FcGoogle } from "react-icons/fc";
 import { userActions } from "../redux/actions/index";
 import Message from "../Components/Message";
 
@@ -24,6 +26,23 @@ const AuthScreen = ({ history }) => {
   const { signUp, signIn } = bindActionCreators(userActions, dispatch);
   const userState = useSelector((state) => state.user);
   const { error } = userState;
+
+  const googleSuccess = (res) => {
+    const user = res?.profileObj;
+    const accessToken = res?.tokenId;
+    const googleLogin = true
+
+    try {
+      dispatch({ type: "AUTH", payload: { user, accessToken  , googleLogin} });
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const googleFailure = (err) => {
+    console.log(err);
+  };
   return (
     <Container>
       <Row className="justify-content-center">
@@ -63,12 +82,30 @@ const AuthScreen = ({ history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <div className="d-grid gap-2 mt-3">
-                <Button type="submit" style={{ height: "50px" }}>
-                  Login
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                style={{ height: "50px", width: "100%" }}
+                className="mt-2 mb-2"
+              >
+                Login
+              </Button>
 
+              <GoogleLogin
+                clientId="568770502002-v3r56fvvai0cpko0jqsurlpd3b55l5g9.apps.googleusercontent.com"
+                onSuccess={googleSuccess}
+                onFailure={googleFailure}
+                render={(renderProps) => (
+                  <Button
+                    variant="info"
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                    style={{ width: "100%" }}
+                  >
+                    <FcGoogle size={20} className="text-center mr-2" />
+                    Sign In With Google
+                  </Button>
+                )}
+              />
               <Form.Text
                 className="text-center mt-3"
                 style={{ fontSize: "18px" }}
@@ -149,11 +186,13 @@ const AuthScreen = ({ history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <div className="d-grid gap-2 mt-3">
-                <Button type="submit" style={{ height: "50px" }}>
-                  Register
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                style={{ height: "50px", width: "100%" }}
+                className="mt-2"
+              >
+                Register
+              </Button>
 
               <Form.Text
                 style={{ fontSize: "18px" }}

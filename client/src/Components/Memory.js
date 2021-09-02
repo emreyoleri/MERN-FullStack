@@ -29,7 +29,7 @@ const Memory = ({ memory }) => {
           <Card.Title className="mb-3">Author: {memory.creator}</Card.Title>
           <Card.Subtitle>{moment(memory.createdAt).fromNow()}</Card.Subtitle>
         </Card.Body>
-        {user?.user?._id === memory.creatorId ? (
+        {user?.user?._id === memory.creatorId || user?.user?.googleId === memory.creatorId  ? (
           <Card.Footer className="pb-0 d-flex justify-content-between bg-white">
             <LinkContainer
               style={{ cursor: "pointer" }}

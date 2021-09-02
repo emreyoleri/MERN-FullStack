@@ -61,6 +61,9 @@ router.put("/:id", auth, async (req, res) => {
         message: "Memory id is not valid",
       });
 
+    const oldMemory = await Memory.findById(id);
+    if (req.creatorId !== oldMemory.creatorId) return res.status(403);
+
     const { title, content, creator, image } = req.body;
 
     const updatedMemory = await Memory.findByIdAndUpdate(
@@ -92,6 +95,9 @@ router.delete("/:id", auth, async (req, res) => {
       res.status(404).json({
         message: "Memory id is not valid",
       });
+
+    const oldMemory = await Memory.findById(id);
+    if (req.creatorId !== oldMemory.creatorId) return res.status(403);
 
     await Memory.findByIdAndDelete(id);
     res.status(200).json({ message: "Memory has been deleted." });

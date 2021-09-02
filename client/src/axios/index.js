@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://memory-box-with-mern.herokuapp.com/",
   withCredentials : true
 });
 

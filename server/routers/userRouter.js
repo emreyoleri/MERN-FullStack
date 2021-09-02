@@ -49,7 +49,7 @@ router.post("/signup", async (req, res) => {
       refreshToken: refreshToken,
     });
 
-    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "strict" });
+    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "strict" , secure : true });
 
 
     res.status(200).json({ user, accessToken });
@@ -92,7 +92,7 @@ router.post("/signin", async (req, res) => {
       { refreshToken: refreshToken },
       { new: true }
     );
-    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "strict" });
+    res.cookie("token", refreshToken, { httpOnly: true, sameSite: "strict", secure : true });
     res.status(200).json({ user, accessToken });
   } catch (error) {
     res.status(500).json({

@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-
 import Memory from "../db/memoryModel.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -34,14 +34,16 @@ router.get("/:id", async (req, res) => {
       message: "Memory not found",
     });
   }
-
 });
 
 // create a memory
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const memory = req.body;
-    const createdMemory = await Memory.create(memory);
+    const createdMemory = await Memory.create({
+      ...memory,
+      creatorId: req.creatorId,
+    });
     res.status(201).json(createdMemory);
   } catch (error) {
     res.json({
@@ -51,7 +53,7 @@ router.post("/", async (req, res) => {
 });
 
 // update a memory
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -79,11 +81,10 @@ router.put("/:id", async (req, res) => {
       message: "Update memory failed.",
     });
   }
-
 });
 
 // delete a memory
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
 

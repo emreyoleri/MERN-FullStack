@@ -12,6 +12,12 @@ const userReducer = (state = initialState, action) => {
         userData: action.payload,
       };
 
+      case actionTypes.AUTO_SIGNIN_SUCCESS:
+        return {
+          ...state,
+          userData : action.payload
+        }
+
     case actionTypes.SIGNIN_FAIL:
       return {
         error: action.payload,

@@ -15,7 +15,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { logOut, getAccessToken } = bindActionCreators(userActions, dispatch);
+  const { logOut, getAccessToken, autoSignIn } = bindActionCreators(
+    userActions,
+    dispatch
+  );
   const [user, setUser] = useState(null);
 
   const exit = async (id) => {
@@ -32,6 +35,7 @@ const Header = () => {
   useEffect(() => {
     if (localStorage.getItem("user") && !user) {
       setUser(JSON.parse(localStorage.getItem("user")));
+      autoSignIn(JSON.parse(localStorage.getItem("user")));
     }
 
     const interval = setInterval(() => {
@@ -56,7 +60,7 @@ const Header = () => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand href="#home">Memory Box</Navbar.Brand>
+            <Navbar.Brand>Memory Box</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">

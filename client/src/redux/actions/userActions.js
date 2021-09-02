@@ -40,6 +40,15 @@ export const signIn = (formData, history) => async (dispatch) => {
   }
 };
 
+export const autoSignIn = () => (dispatch) => {
+  const data = JSON.parse(localStorage.getItem("user"));
+
+  dispatch({
+    type: actionTypes.AUTO_SIGNIN_SUCCESS,
+    payload: data,
+  });
+};
+
 export const logOut = (id) => async (dispatch) => {
   try {
     const { message } = await API.logOut(id);

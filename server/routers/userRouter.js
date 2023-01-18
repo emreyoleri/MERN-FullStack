@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import express from "express";
 import User from "../db/userModel.js";
 import Token from "../db/tokenModel.js";

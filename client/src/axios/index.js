@@ -1,18 +1,18 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://memory-box-with-mern.herokuapp.com/",
-  withCredentials : true
+  baseURL: "https://memory-box-api.onrender.com/",
+  withCredentials: true,
 });
 
 API.interceptors.request.use((req) => {
-  if (localStorage.getItem('user')) {
+  if (localStorage.getItem("user")) {
     req.headers.authorization = `Bearer ${
-      JSON.parse(localStorage.getItem('user')).accessToken
-    }`
+      JSON.parse(localStorage.getItem("user")).accessToken
+    }`;
   }
-  return req
-})
+  return req;
+});
 
 /* Memory Actions */
 
